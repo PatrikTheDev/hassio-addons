@@ -114,14 +114,14 @@ jobs:
           container-registry: ghcr.io
           container-registry-username: ${{ github.actor }}
           container-registry-password: ${{ secrets.GITHUB_TOKEN }}
-          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+          push: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}
 
   publish:
     name: Publish multi-architecture manifest
     needs:
       - validate
       - build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: home-assistant/builder/actions/publish-multi-arch-manifest@2026.06.0
