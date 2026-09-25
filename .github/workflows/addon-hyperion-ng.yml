@@ -20,11 +20,12 @@ on:
 permissions:
   contents: read
   id-token: write
+  packages: write
 
 env:
   ARCHITECTURES: '["amd64", "aarch64"]'
   IMAGE_NAME: addon-hyperion-ng
-  REGISTRY_PREFIX: docker.io/bradsjm
+  REGISTRY_PREFIX: ghcr.io/patrikthedev
 
 jobs:
   validate:
@@ -65,7 +66,7 @@ jobs:
           assert config["host_network"] is True
           assert "ports" not in config
           assert "ports_description" not in config
-          assert config["image"] == "docker.io/bradsjm/addon-hyperion-ng"
+          assert config["image"] == "ghcr.io/patrikthedev/addon-hyperion-ng"
           assert config["webui"] == "http://[HOST]:[PORT:8090]"
           assert config["options"]["admin_password"] == ""
           assert config["schema"]["admin_password"] == "password?"
@@ -109,9 +110,10 @@ jobs:
             io.hass.type=app
             io.hass.name=Hyperion.NG
             io.hass.description=Hyperion is an opensource Bias or Ambient Lighting implementation by the Hyperion-Project. This add-on is not supported or endorsed by the Hyperion Project and may not work with hardware capture cards or LED devices due to limitations of containers
-          container-registry: docker.io
-          container-registry-username: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.DOCKERHUB_USER) || 'unused' }}
-          container-registry-password: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.DOCKERHUB_PASSWORD) || 'unused' }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+          container-registry: ghcr.io
+          container-registry-username: ${{ github.actor }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}
           push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 
   publish:
@@ -128,6 +130,6 @@ jobs:
           image-name: ${{ env.IMAGE_NAME }}
           image-tags: ${{ needs.validate.outputs.version }}
           registry-prefix: ${{ env.REGISTRY_PREFIX }}
-          container-registry: docker.io
-          container-registry-username: ${{ secrets.DOCKERHUB_USER }}
-          container-registry-password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          container-registry: ghcr.io
+          container-registry-username: ${{ github.actor }}
+          container-registry-password: ${{ secrets.GITHUB_TOKEN }}

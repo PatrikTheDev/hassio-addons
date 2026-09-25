@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 		libglib2.0-0 \
 		zlib1g \
 		libcec6 \
+		shared-mime-info \
 		curl \
 		v4l-utils \
 	&& rm -rf /var/lib/apt/lists/*

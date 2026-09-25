@@ -46,7 +46,7 @@ Use the scripts below for validation and smoke testing.
   `./.github/scripts/build-openchamber.sh all`
 
 Notes:
-- Hyperion CI uses the pinned `home-assistant/builder` composite actions to publish `docker.io/bradsjm/addon-hyperion-ng` as a multi-architecture manifest on pushes to `main`.
+- Hyperion CI uses the pinned `home-assistant/builder` composite actions to publish `ghcr.io/patrikthedev/addon-hyperion-ng` as a multi-architecture manifest on pushes to `main`.
 
 ### Smoke Tests (single "test")
 

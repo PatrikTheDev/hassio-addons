@@ -13,7 +13,7 @@ boot: auto
 host_network: true
 map:
   - config:rw
-image: "docker.io/bradsjm/addon-hyperion-ng"
+image: "ghcr.io/patrikthedev/addon-hyperion-ng"
 options:
   admin_password: ""
 schema:
